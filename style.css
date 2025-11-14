@@ -84,3 +84,12 @@ h1 {
 .comments-container p {
   margin-left: 20px;
 }
+
+/* classes created to toggle the display property of comment container */
+/* .hidden {
+  display: none;
+}
+
+.show {
+  display: block;
+} */
