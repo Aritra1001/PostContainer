@@ -26,8 +26,20 @@ const postContentEle = document.createElement("p");
 postContentEle.textContent = `${post1.content}`;
 
 //button ele
-const btnEle = document.createElement("button");
-btnEle.textContent = "Like";
+const likeBtn = document.createElement("button");
+likeBtn.textContent = "Like";
+
+const likedPosts = new Set();
+
+likeBtn.addEventListener("click", () => {
+  if (likedPosts.has(post1.id)) return;
+
+  post1.likes++;
+  likedPosts.add(post1.id);
+  likeBtn.style.backgroundColor = "red";
+  likeBtn.setAttribute("disabled", "true");
+  postFooterEl.textContent = `Likes: ${post1.likes} Comments: ${post1.comments.length}`;
+});
 
 //comment input ele
 const inputEle = document.createElement("input");
@@ -37,6 +49,17 @@ inputEle.placeholder = "Write a comment...";
 // comment btn
 const commentBtn = document.createElement("button");
 commentBtn.textContent = "Comment";
+
+commentBtn.addEventListener("click", () => {
+  const newCmt = inputEle.value.trim();
+  if (newCmt === "") return;
+  post1.comments.push(newCmt);
+  postFooterEl.textContent = `Likes: ${post1.likes} Comments: ${post1.comments.length}`;
+  const cmtEl = document.createElement("p");
+  cmtEl.textContent = newCmt;
+  cmtCont.appendChild(cmtEl);
+  inputEle.value = "";
+});
 
 // likes and comment div
 const postFooterEl = document.createElement("div");
@@ -56,8 +79,6 @@ post1.comments.forEach((_cmt) => {
 });
 
 postFooterEl.addEventListener("click", () => {
-  console.log("post footer ele clicked");
-
   //   we can toggle using classList toggle
   //   cmtCont.classList.toggle("show");
 
@@ -69,13 +90,11 @@ postFooterEl.addEventListener("click", () => {
   }
 });
 
-
-
 postEl.append(
   authorEl,
   imageEl,
   postContentEle,
-  btnEle,
+  likeBtn,
   inputEle,
   commentBtn,
   postFooterEl,
