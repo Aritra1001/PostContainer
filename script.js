@@ -1,104 +1,135 @@
-let post1 = {
-  id: 1,
-  author: "John",
-  content: "My first Post!",
-  likes: 10,
-  comments: ["Great post!", "Nice photo!"],
-  image: "https://files.codingninjas.in/image2-28694.jpg",
-};
-
-const postsEl = document.getElementById("posts"); //posts div
-const postEl = document.createElement("div"); //new div container to contain the post details
-postEl.classList.add("post");
-
-// author ele
-const authorEl = document.createElement("h3");
-authorEl.textContent = `${post1.author}`;
-
-// image ele
-const imageEl = document.createElement("img");
-// imageEl.setAttribute("src", `${post1.image}`);
-imageEl.src = post1.image;
-imageEl.setAttribute("alt", "Post Image");
-
-// post content ele
-const postContentEle = document.createElement("p");
-postContentEle.textContent = `${post1.content}`;
-
-//button ele
-const likeBtn = document.createElement("button");
-likeBtn.textContent = "Like";
+let postsData = [
+  {
+    id: 1,
+    author: "John",
+    content: "Hello, Instagram!",
+    likes: 10,
+    comments: ["Great post!", "Nice photo!"],
+    image: "https://files.codingninjas.in/image2-28694.jpg",
+  },
+  {
+    id: 2,
+    author: "Jane",
+    content: "This is a great post!",
+    likes: 15,
+    comments: [],
+    image: "https://files.codingninjas.in/oip-28704.jpg",
+  },
+  {
+    id: 3,
+    author: "Alice",
+    content: "Another post",
+    likes: 8,
+    comments: [],
+    image: "https://files.codingninjas.in/th-2-28706.jpg",
+  },
+  {
+    id: 4,
+    author: "Bob",
+    content: "Check out this photo!",
+    likes: 20,
+    comments: [],
+    image: "https://files.codingninjas.in/image1-28708.jpg",
+  },
+];
 
 const likedPosts = new Set();
+const postsEl = document.getElementById("posts"); //posts div
 
-likeBtn.addEventListener("click", () => {
-  if (likedPosts.has(post1.id)) return;
-
-  post1.likes++;
-  likedPosts.add(post1.id);
-  likeBtn.style.backgroundColor = "red";
-  likeBtn.setAttribute("disabled", "true");
-  postFooterEl.textContent = `Likes: ${post1.likes} Comments: ${post1.comments.length}`;
+postsData.forEach((_postData) => {
+  renderPosts(_postData);
 });
 
-//comment input ele
-const inputEle = document.createElement("input");
-inputEle.type = "text";
-inputEle.placeholder = "Write a comment...";
+function renderPosts({ id, author, content, likes, comments, image }) {
+  const postEl = document.createElement("div"); //new div container to contain the post details
+  postEl.classList.add("post");
 
-// comment btn
-const commentBtn = document.createElement("button");
-commentBtn.textContent = "Comment";
+  // author ele
+  const authorEl = document.createElement("h3");
+  authorEl.textContent = `${author}`;
 
-commentBtn.addEventListener("click", () => {
-  const newCmt = inputEle.value.trim();
-  if (newCmt === "") return;
-  post1.comments.push(newCmt);
-  postFooterEl.textContent = `Likes: ${post1.likes} Comments: ${post1.comments.length}`;
-  const cmtEl = document.createElement("p");
-  cmtEl.textContent = newCmt;
-  cmtCont.appendChild(cmtEl);
-  inputEle.value = "";
-});
+  // image ele
+  const imageEl = document.createElement("img");
+  // imageEl.setAttribute("src", `${image}`);
+  imageEl.src = image;
+  imageEl.setAttribute("alt", "Post Image");
 
-// likes and comment div
-const postFooterEl = document.createElement("div");
-postFooterEl.classList.add("post-footer");
-postFooterEl.textContent = `Likes: ${post1.likes} Comments: ${post1.comments.length}`;
+  // post content ele
+  const postContentEle = document.createElement("p");
+  postContentEle.textContent = `${content}`;
 
-const cmtCont = document.createElement("div");
-cmtCont.classList.add("comments-container");
-cmtCont.style.display = "none";
-// cmtCont.classList.add("hidden");
+  //button ele
+  const likeBtn = document.createElement("button");
+  likeBtn.textContent = "Like";
 
-post1.comments.forEach((_cmt) => {
-  console.log("comment", _cmt);
-  const cmtEl = document.createElement("p");
-  cmtEl.textContent = _cmt;
-  cmtCont.appendChild(cmtEl);
-});
+  likeBtn.addEventListener("click", () => {
+    if (likedPosts.has(id)) return;
 
-postFooterEl.addEventListener("click", () => {
-  //   we can toggle using classList toggle
-  //   cmtCont.classList.toggle("show");
+    likes++;
+    likedPosts.add(id);
+    likeBtn.style.backgroundColor = "red";
+    likeBtn.setAttribute("disabled", "true");
+    postFooterEl.textContent = `Likes: ${likes} Comments: ${comments.length}`;
+  });
 
-  // also using checking and setting the display property
-  if (cmtCont.style.display === "none") {
-    cmtCont.style.display = "block";
-  } else {
-    cmtCont.style.display = "none";
-  }
-});
+  //comment input ele
+  const inputEle = document.createElement("input");
+  inputEle.type = "text";
+  inputEle.placeholder = "Write a comment...";
 
-postEl.append(
-  authorEl,
-  imageEl,
-  postContentEle,
-  likeBtn,
-  inputEle,
-  commentBtn,
-  postFooterEl,
-  cmtCont
-);
+  // comment btn
+  const commentBtn = document.createElement("button");
+  commentBtn.textContent = "Comment";
 
-postsEl.appendChild(postEl);
+  commentBtn.addEventListener("click", () => {
+    const newCmt = inputEle.value.trim();
+    if (newCmt === "") return;
+    comments.push(newCmt);
+    postFooterEl.textContent = `Likes: ${likes} Comments: ${comments.length}`;
+    const cmtEl = document.createElement("p");
+    cmtEl.textContent = newCmt;
+    cmtCont.appendChild(cmtEl);
+    inputEle.value = "";
+  });
+
+  // likes and comment div
+  const postFooterEl = document.createElement("div");
+  postFooterEl.classList.add("post-footer");
+  postFooterEl.textContent = `Likes: ${likes} Comments: ${comments.length}`;
+
+  const cmtCont = document.createElement("div");
+  cmtCont.classList.add("comments-container");
+  cmtCont.style.display = "none";
+  // cmtCont.classList.add("hidden");
+
+  comments.forEach((_cmt) => {
+    const cmtEl = document.createElement("p");
+    cmtEl.textContent = _cmt;
+    cmtCont.appendChild(cmtEl);
+  });
+
+  postFooterEl.addEventListener("click", () => {
+    //   we can toggle using classList toggle
+    //   cmtCont.classList.toggle("show");
+
+    // also using checking and setting the display property
+    if (cmtCont.style.display === "none") {
+      cmtCont.style.display = "block";
+    } else {
+      cmtCont.style.display = "none";
+    }
+  });
+
+  postEl.append(
+    authorEl,
+    imageEl,
+    postContentEle,
+    likeBtn,
+    inputEle,
+    commentBtn,
+    postFooterEl,
+    cmtCont
+  );
+
+  postsEl.appendChild(postEl);
+}
