@@ -35,6 +35,9 @@ let postsData = [
 
 const likedPosts = new Set();
 const postsEl = document.getElementById("posts"); //posts div
+const postForm = document.getElementById("postForm");
+const inputCaptionEl = document.getElementById("postInput");
+const inputFileEl = document.getElementById("imageInput");
 
 postsData.forEach((_postData) => {
   renderPosts(_postData);
@@ -133,3 +136,26 @@ function renderPosts({ id, author, content, likes, comments, image }) {
 
   postsEl.appendChild(postEl);
 }
+
+postForm.addEventListener("submit", (event) => {
+  event.preventDefault(); //to prevent reload of the page
+  console.log("form submitted");
+  console.log(
+    "image file",
+    inputFileEl.files[0],
+    URL.createObjectURL(inputFileEl.files[0]),
+    inputCaptionEl.value
+  );
+  const caption = inputCaptionEl.value;
+  const imageFile = inputFileEl.files[0];
+  const imageUrl = URL.createObjectURL(imageFile);
+  renderPosts({
+    id: postsData.length + 1,
+    author: "Aritra",
+    content: `${caption}`,
+    likes: 0,
+    comments: [],
+    image: `${imageUrl}`,
+  });
+  postForm.reset();
+});
